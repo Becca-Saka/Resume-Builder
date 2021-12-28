@@ -64,23 +64,13 @@ class _ReferenceState extends State<Reference> {
         child: SingleChildScrollView(
           child: Column(children: [
             SizedBox(height: 10,),
-             ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: listText.length,
-              itemBuilder: (BuildContext context, int index){
-              return   Dismissible(
-                key: UniqueKey(), 
-                background: Container(
-                  color: Colors.red,
-                ),
-                onDismissed: (direction){
-                  remove(index);
-                },
-                child: listText[index]);
-
-            }),
-              SizedBox(height: 10,),
+             ReorderableListView(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                children: _getReorderableListItems(),
+                onReorder: _updateItems,
+              ),
+            SizedBox(height: 10,),
               footerButtons(
                 onAddTap: addNew, onSaveAdd: saveText
               ),
@@ -89,6 +79,34 @@ class _ReferenceState extends State<Reference> {
       ),
     );
   }
+   List<Widget> _getReorderableListItems() => listText
+      .asMap()
+      .map((i, item) => MapEntry(i, _buildExperienceList(item, i)))
+      .values
+      .toList();
+
+  Dismissible _buildExperienceList(ReferenceItem item, int index) {
+    return Dismissible(
+        key: UniqueKey(),
+        background: Container(
+          color: Colors.red,
+        ),
+        onDismissed: (direction) {
+          remove(index);
+        },
+        child: item);
+  }
+
+  void _updateItems(int oldIndex, int newIndex) {
+    listText.insert(newIndex, listText[oldIndex]);
+    if (oldIndex < newIndex) {
+      listText.removeAt(oldIndex);
+    } else {
+      listText.removeAt(oldIndex + 1);
+    }
+    setState(() {});
+  }
+
 }
 
 class ReferenceItem extends StatelessWidget{

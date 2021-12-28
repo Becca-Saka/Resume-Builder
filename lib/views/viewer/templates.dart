@@ -289,7 +289,6 @@ class Temp1 extends pw.StatelessWidget {
 }
 
 class Temp2 extends pw.StatelessWidget {
-
   pw.Font hk, barlowRegular;
   Temp2(this.hk, this.barlowRegular);
   PdfColor color = PdfColor.fromHex('000000');
@@ -314,7 +313,7 @@ class Temp2 extends pw.StatelessWidget {
           height: double.infinity,
           color: color,
           child: pw.Padding(
-              padding: pw.EdgeInsets.symmetric(horizontal: 10, vertical: 50),
+              padding: pw.EdgeInsets.symmetric(horizontal: 12, vertical: 50),
               child: pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
@@ -561,6 +560,9 @@ class Temp2 extends pw.StatelessWidget {
             textAlign: pw.TextAlign.left,
             style: pw.TextStyle(
                 fontSize: textSize, font: barlowRegular, color: textColor),
+          ),
+          pw.SizedBox(
+            width: 5,
           ),
           skillsRate(color, level),
         ]));
@@ -919,6 +921,7 @@ class Temp4 extends pw.StatelessWidget {
       pw.Expanded(
         child: pw.Row(mainAxisAlignment: pw.MainAxisAlignment.start, children: [
           pw.Expanded(
+            flex: 1,
             child: pw.Container(
               color: color,
               child: pw.Padding(
@@ -975,6 +978,7 @@ class Temp4 extends pw.StatelessWidget {
             ),
           ),
           pw.Expanded(
+            flex: 2,
             child: pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
@@ -994,7 +998,6 @@ class Temp4 extends pw.StatelessWidget {
                                 text('${AppRepo.about}', color),
                               ]),
                         ),
-
                         pw.SizedBox(height: 10),
                         divider(),
                         visibility(
@@ -1051,7 +1054,8 @@ class Temp4 extends pw.StatelessWidget {
                                                 ]))
                                         .toList()),
                               ]),
-                        ),]),
+                        ),
+                      ]),
                 ),
               ],
             ),
@@ -1115,9 +1119,15 @@ class Temp5 extends pw.StatelessWidget {
     return pw.Container(color: divColor, height: 1, width: width);
   }
 
+  pw.Widget verticalDivider({height}) {
+    return pw.Container(color: divColor, height: height, width: 1);
+  }
+
   @override
   pw.Widget build(pw.Context context) {
     final width = context.page.pageFormat.availableWidth;
+
+    final hh = context.page.pageFormat.availableHeight;
     return pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.stretch,
         mainAxisAlignment: pw.MainAxisAlignment.start,
@@ -1172,15 +1182,15 @@ class Temp5 extends pw.StatelessWidget {
               font: hk,
             ),
           ),
-          pw.SizedBox(height: 10),
+          // pw.SizedBox(height: 10),
           pw.Padding(
-            padding: pw.EdgeInsets.symmetric(horizontal: 15),
+            padding: pw.EdgeInsets.symmetric(horizontal: 45),
             child: divider(),
           ),
           pw.Container(
               width: width,
               child: pw.Padding(
-                padding: pw.EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+                padding: pw.EdgeInsets.symmetric(horizontal: 45, vertical: 30),
                 child: pw.Row(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     mainAxisAlignment: pw.MainAxisAlignment.start,
@@ -1261,7 +1271,13 @@ class Temp5 extends pw.StatelessWidget {
                               ),
                             ]),
                       ),
-                      pw.SizedBox(width: 10),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.symmetric(horizontal: 20),
+                        child: verticalDivider(
+                          height:
+                              context.page.pageFormat.availableHeight - 300.0,
+                        ),
+                      ),
                       pw.Expanded(
                         child: pw.Expanded(
                           child: pw.Column(
@@ -1340,7 +1356,6 @@ class Temp5 extends pw.StatelessWidget {
                                             .toList()),
                                   ),
                                 ),
-                                divider(),
                               ]),
                         ),
                       ),
@@ -1352,7 +1367,11 @@ class Temp5 extends pw.StatelessWidget {
 
 class Temp6 extends pw.StatelessWidget {
   pw.Font ttf, lora, headerFont;
-  Temp6(this.ttf, this.lora, this.headerFont,);
+  Temp6(
+    this.ttf,
+    this.lora,
+    this.headerFont,
+  );
   double nameSize = 30,
       textSize = 16,
       headerSize = 18,
@@ -1384,7 +1403,7 @@ class Temp6 extends pw.StatelessWidget {
     final width = context.page.pageFormat.availableWidth;
     final height = context.page.pageFormat.availableHeight;
     return pw.Padding(
-      padding: const pw.EdgeInsets.all(10.0),
+      padding: const pw.EdgeInsets.all(50.0),
       child: pw.Column(
           mainAxisAlignment: pw.MainAxisAlignment.start,
           crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -1501,7 +1520,9 @@ class Temp6 extends pw.StatelessWidget {
                                               fontWeight: pw.FontWeight.bold),
                                         ),
                                         text('${e.role}'),
-                                        text('${e.summary}'),
+                                        pw.SizedBox(
+                                            width: width - 30,
+                                            child: text('${e.summary}')),
                                       ],
                                     ),
                                   ],

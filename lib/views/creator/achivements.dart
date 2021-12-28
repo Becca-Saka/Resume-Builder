@@ -8,34 +8,37 @@ class Achievements extends StatefulWidget {
 }
 
 class _AchievementsState extends State<Achievements> {
-  final TextEditingController controller =  new TextEditingController();
-
-  @override
-  void initState() {
-      controller.text = AppRepo. achievements??'';
-      super.initState();
-    }
- 
+  final TextEditingController controller =
+      new TextEditingController(text: AppRepo.achievements ?? '');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Achivements'),),
-      body:   Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView(children: [
-          SizedBox(height: 10,),
-           
-      text('Achivements', controller: controller, lines: 5 ),
-            SizedBox(height: 10,),
-            singlefooterButtons(onSaveTap: (){
-              setState(() {
-                                AppRepo.achievements =controller.text;
-                              });
-
-            })
-        ],),
-      )
-    );
+        appBar: AppBar(
+          title: Text('Achivements'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              text('Achivements', controller: controller, lines: 8),
+              SizedBox(
+                height: 10,
+              ),
+             
+              SizedBox(
+                  width: double.infinity,
+                child: singlefooterButtons(onSaveTap: () {
+                  setState(() {
+                    AppRepo.achievements = controller.text;
+                  });
+                }),
+              )
+            ],
+          ),
+        ));
   }
 }

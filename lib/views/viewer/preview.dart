@@ -7,7 +7,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:printing/printing.dart';
 import 'templates.dart';
-
+import 'package:path_provider/path_provider.dart';
 
 class Preview extends StatefulWidget {
   final int index;
@@ -31,7 +31,6 @@ class _PreviewState extends State<Preview> {
       hk;
   int index;
   pw.Document pdf;
-      
 
   @override
   void initState() {
@@ -39,7 +38,6 @@ class _PreviewState extends State<Preview> {
     loadFont();
     super.initState();
   }
-
 
   pw.Widget templateText(String text, double size, {pw.Font font}) {
     return pw.Text(
@@ -59,20 +57,63 @@ class _PreviewState extends State<Preview> {
     return Permission.storage.request();
   }
 
+  Future<bool> _requestPermission(Permission permission) async {
+    if (await permission.isGranted) {
+      return true;
+    } else {
+      var result = await permission.request();
+      if (result == PermissionStatus.granted) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   savePdf() async {
-    final directoryName = 'Resume Builder';
-    DateTime dateTime = DateTime.now();
-    if (!(await checkPermission())) await requestPermision();
-    String path = '/storage/emulated/0/$directoryName';
-    final dir = Directory(path);
-    if (!dir.existsSync()) {
-      await dir.create(recursive: true);
+    Directory directory;
+    if (Platform.isAndroid) {
+      if (await _requestPermission(Permission.storage) &&
+          // access media location needed for android 10/Q
+          await _requestPermission(Permission.accessMediaLocation) &&
+          // manage external storage needed for android 11/R
+          await _requestPermission(Permission.manageExternalStorage)) {
+        directory = await getExternalStorageDirectory();
+        String newPath = "";
+        print(directory);
+        List<String> paths = directory.path.split("/");
+        for (int x = 1; x < paths.length; x++) {
+          String folder = paths[x];
+          if (folder != "Android") {
+            newPath += "/" + folder;
+          } else {
+            break;
+          }
+        }
+        newPath = newPath + "/Resume Builder";
+        directory = Directory(newPath);
+        if (!directory.existsSync()) {
+          await directory.create(recursive: true);
+        }
+        DateTime dateTime = DateTime.now();
+        final String filePath = '$newPath/Resume${dateTime.microsecond}.pdf';
+        print(filePath);
+        File(filePath).writeAsBytesSync(await pdf.save());
+        print('Done');
+      }
     }
-    final String filePath = '$path/Res${dateTime.microsecond}.pdf';
-    print(filePath);
-    File(filePath).writeAsBytesSync(await pdf.save());
-    print('Done');
+    print(directory);
+    // final directoryName = 'Resume Builder';
+    // DateTime dateTime = DateTime.now();
+    // if (!(await checkPermission())) await requestPermision();
+    // String path = '/storage/emulated/0/$directoryName';
+    // final dir = Directory(path);
+    // if (!dir.existsSync()) {
+    //   await dir.create(recursive: true);
+    // }
+    // final String filePath = '$path/Res${dateTime.microsecond}.pdf';
+    // print(filePath);
+    // File(filePath).writeAsBytesSync(await pdf.save());
+    // print('Done');
   }
 
   loadFont() async {
@@ -103,7 +144,6 @@ class _PreviewState extends State<Preview> {
 
   Widget viewPDF() {
     pdf = pw.Document();
-   
 
     pdf.addPage(pw.Page(
         margin: pw.EdgeInsets.zero,
@@ -132,7 +172,7 @@ class _PreviewState extends State<Preview> {
               return Temp5(hk, hkLight);
               break;
             case 6:
-              return Temp6(ttf, lora, headerFont);
+              return Temp6(ttf, hkLight, hk);
               break;
           }
           return Temp1(barlow, barlowRegular);
