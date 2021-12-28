@@ -48,15 +48,6 @@ class _PreviewState extends State<Preview> {
       ),
     );
   }
-
-  Future<bool> checkPermission() async {
-    return Permission.storage.isGranted;
-  }
-
-  Future<PermissionStatus> requestPermision() async {
-    return Permission.storage.request();
-  }
-
   Future<bool> _requestPermission(Permission permission) async {
     if (await permission.isGranted) {
       return true;
@@ -102,18 +93,6 @@ class _PreviewState extends State<Preview> {
       }
     }
     print(directory);
-    // final directoryName = 'Resume Builder';
-    // DateTime dateTime = DateTime.now();
-    // if (!(await checkPermission())) await requestPermision();
-    // String path = '/storage/emulated/0/$directoryName';
-    // final dir = Directory(path);
-    // if (!dir.existsSync()) {
-    //   await dir.create(recursive: true);
-    // }
-    // final String filePath = '$path/Res${dateTime.microsecond}.pdf';
-    // print(filePath);
-    // File(filePath).writeAsBytesSync(await pdf.save());
-    // print('Done');
   }
 
   loadFont() async {

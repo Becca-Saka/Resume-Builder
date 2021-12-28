@@ -53,7 +53,6 @@ class _SelectTemplateState extends State<SelectTemplate> {
             SizedBox(
               height: 10,
             ),
-            //  Spacer(),
             Row(
               children: [
                 imageWidget('assets/images/temp3.jpg', 3),
@@ -64,7 +63,6 @@ class _SelectTemplateState extends State<SelectTemplate> {
             SizedBox(
               height: 10,
             ),
-            //  Spacer(),
             Row(
               children: [
                 imageWidget('assets/images/temp5.png', 5),
