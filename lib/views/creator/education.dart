@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:resume_builder/models/education_model.dart';
 import '../../database/repo.dart';

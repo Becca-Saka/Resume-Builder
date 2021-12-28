@@ -1126,8 +1126,6 @@ class Temp5 extends pw.StatelessWidget {
   @override
   pw.Widget build(pw.Context context) {
     final width = context.page.pageFormat.availableWidth;
-
-    final hh = context.page.pageFormat.availableHeight;
     return pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.stretch,
         mainAxisAlignment: pw.MainAxisAlignment.start,
